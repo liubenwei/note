@@ -217,6 +217,10 @@ public class PersonPhoneExistInVisitorValidator implements Validator {
 	}
 }
 
+
+http://127.0.0.1:8068
+
+
 package com.lianxin.zm.helper.api.resource.visitor;
 
 import org.springframework.validation.Errors;
