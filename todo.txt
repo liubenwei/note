@@ -263,5 +263,64 @@ public class VisitorPhoneExistInPersonValidator implements Validator {
 验证： 民族代码格式验证 限制20 10
 批量导出：
 
+code 
+
+		// 获取状态正常的部门
+		List<Dept> departments = super.findAll();
+
+		List<Person> persons = personService.findAll();
+		Map<Long, List<Person>> personMap = persons.stream()
+				.collect(Collectors.groupingBy(Person::getId));
+
+		List<TreeNode<DeptAndPersonTreeNode>> personTreeNodes = new ArrayList<>();
+
+		// 构建部门的节点
+		List<TreeNode<DeptAndPersonTreeNode>> deptTreeNodes = departments
+				.stream().map(dept -> {
+
+					DeptAndPersonTreeNode node = new DeptAndPersonTreeNode();
+					node.setId(dept.getId());
+					node.setName(dept.getName());
+					node.setType(1);
+
+					TreeNode<DeptAndPersonTreeNode> treeNode = new TreeNode<>();
+					treeNode.setId(TreeDef.prefix.DEPT + dept.getId());
+
+					if (dept.getParentId().equals(0L)) {
+						treeNode.setParentId(dept.getParentId().toString());
+					} else {
+						treeNode.setParentId(
+								TreeDef.prefix.DEPT + dept.getParentId());
+					}
+
+					treeNode.setData(node);
+
+					// 构建person节点
+					List<Person> tempPersons = personMap.get(dept.getId());
+					if (CollectionUtils.isNotEmpty(tempPersons)) {
+						tempPersons.forEach(person -> {
+
+							DeptAndPersonTreeNode personNode = new DeptAndPersonTreeNode();
+							personNode.setId(person.getId());
+							personNode.setName(person.getName());
+							personNode.setType(2);
+
+							TreeNode<DeptAndPersonTreeNode> personTreeNode = new TreeNode<>();
+							personTreeNode.setId(
+									TreeDef.prefix.PERSON + person.getId());
+							personTreeNode.setParentId(
+									TreeDef.prefix.DEPT + dept.getId());
+							personTreeNode.setData(personNode);
+
+							personTreeNodes.add(personTreeNode);
+						});
+					}
+
+					return treeNode;
+
+				}).collect(Collectors.toList());
+
+		deptTreeNodes.addAll(personTreeNodes);
+
 
 
