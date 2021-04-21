@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="redis">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/images/redis/typora-mo-theme.zip!/" />
+      <root url="jar://$PROJECT_DIR$/images/redis/typora-theme-next.zip!/" />
+      <root url="jar://$PROJECT_DIR$/images/redis/cola_demo.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
